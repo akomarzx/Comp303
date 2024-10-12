@@ -89,28 +89,44 @@
                     </div>
                     <div class="row p-2">
                         <div class="h3 text-secondary p-2 bg-info bg-opacity-10 border border-info rounded">Product Details</div>
-                        <div class="mb-3">
-                            <label for="product-number" class="form-label">Product #</label>
-                            <input type="text" class="form-control" id="product-number" th:field="*{productNumber}" required>
+                        <div class="mb-3 d-flex">
+                        	<div class="me-2">
+ 	                           <label for="product-number" class="form-label text-primary">Product #</label>
+                        	</div>
+                        	<div>
+ 	                           <input type="text" class="form-control" id="product-number" th:field="*{productNumber}" required>
+                        	</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="phone-brand" class="form-label">Phone Brand</label>
-                            <select class="form-select" id="phone-brand" th:field="*{phoneBrand}" onchange="updatePhoneModels(this.value)" required>
-                                <option value="" disabled>Select Brand</option>
-                                <option value="Samsung" selected>Samsung</option>
-                                <option value="Apple">Apple</option>
-                                <option value="Google">Google</option>
-                            </select>
+                        <div class="mb-3 d-flex">
+                        	<div class="me-2">
+ 	                           <label for="phone-brand" class="form-label text-primary">Phone Brand</label>
+                        	</div>
+                        	<div>
+                            	<select class="form-select" id="phone-brand" th:field="*{phoneBrand}" onchange="updatePhoneModels(this.value)" required>
+                                	<option value="" disabled>Select Brand</option>
+                                	<option value="Samsung" selected>Samsung</option>
+                                	<option value="Apple">Apple</option>
+                                	<option value="Google">Google</option>
+                            	</select>
+                        	</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="phone-model" class="form-label">Phone Model</label>
-                            <select class="form-select" id="phone-model" th:field="*{phoneModel}" onchange="updatePhonePrice()" required>
-                                <option value="" disabled selected>Select Model</option>
-                            </select>
+                        <div class="mb-3 d-flex">
+                        	<div class="me-2">
+ 	                           <label for="phone-model" class="form-label text-primary">Phone Model</label>
+                        	</div>
+                        	<div>
+                            	<select class="form-select" id="phone-model" th:field="*{phoneModel}" onchange="updatePhonePrice()" required>
+                                	<option value="" disabled selected>Select Model</option>
+                            	</select>
+                        	</div>
                         </div>
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" required oninput="updateTotalPrice()">
+                        <div class="mb-3 d-flex">
+                        	<div class=me-4>
+ 	                           <label for="quantity" class="form-label text-primary">Quantity</label>
+                        	</div>
+                        	<div>
+ 	                           <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" required oninput="updateTotalPrice()">
+                        	</div>
                         </div>
                         <input type="hidden" th:field="*{phonePrice}" id="hidden-phone-price">
                     </div>
