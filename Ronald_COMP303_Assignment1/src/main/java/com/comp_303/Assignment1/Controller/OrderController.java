@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.comp_303.Assignment1.Model.OrderModel;
 
+/*
+ Student: Ronald Jr Ombao
+ Student #: 301213219
+ Date: October 12, 20204
+*/
+
 @Controller
 public class OrderController {
 
@@ -20,6 +26,6 @@ public class OrderController {
     @PostMapping("/createOrder")
     public String createOrder(@ModelAttribute OrderModel orderModel) {
         // Process the order
-        return "OrderConfirmation";  // Another template to show after order submission
+        return "show-order";  // Another template to show after order submission
     }
 }

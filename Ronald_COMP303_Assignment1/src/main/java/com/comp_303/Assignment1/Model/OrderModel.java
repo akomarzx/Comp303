@@ -1,5 +1,12 @@
 package com.comp_303.Assignment1.Model;
 
+/*
+Student: Ronald Jr Ombao
+Student #: 301213219
+Date: October 12, 20204
+*/
+
+
 public class OrderModel {
     private String firstName;
     private String middleName;
