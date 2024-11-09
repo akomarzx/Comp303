@@ -13,6 +13,14 @@
             <p>Your payment has been successfully processed. Your application is now being reviewed.</p>
             <hr>
             <p class="mb-0">You will receive a confirmation email soon.</p>
+
+            <div>
+                <h5>Enrollment Details</h5>
+                <p><strong>Program:</strong> <span th:text="${enrollment.program.programName}"></span></p>
+                <p><strong>Start Date:</strong> <span th:text="${enrollment.startDate}"></span></p>
+                <p><strong>Status:</strong> <span th:text="${enrollment.status}"></span></p>
+                <p><strong>Amount Paid:</strong> $<span th:text="${enrollment.amountPaid}"></span></p>
+            </div>
         </div>
         <a href="/profile" class="btn btn-primary">Go to Profile</a>
     </div>

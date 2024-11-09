@@ -1,3 +1,9 @@
+<!-- 
+Ronald Ombao
+301213219
+November 09, 2024
+ --> 
+<!-- checkout.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -9,7 +15,16 @@
 <body>
     <div class="container mt-5">
         <h2>Payment for Application Processing Fee</h2>
+
+        <!-- Display selected program information -->
+        <div class="alert alert-info">
+            <p><strong>Program:</strong> <span th:text="${program.programName}"></span></p>
+            <p><strong>Fee:</strong> $<span th:text="${program.fee}"></span></p>
+        </div>
+
         <form th:action="@{/payment}" method="POST">
+            <input type="hidden" name="programCode" th:value="${programCode}" />
+            
             <div class="mb-3">
                 <label for="cardNumber" class="form-label">Card Number</label>
                 <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
