@@ -1,0 +1,12 @@
+spring:
+ application:
+  name: Ronald_Ombao_301213219_Assignment_2
+ datasource:
+  url: jdbc:mysql://54.144.209.66:3306/Comp_303
+  username: comp_303_user
+  password: Comp306Password
+ jpa:
+  show-sql: true
+  open-in-view: false
+  hibernate:
+   ddl-auto: create-drop
