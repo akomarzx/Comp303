@@ -1,4 +1,4 @@
-	package com.example.demo.Model;
+package com.example.demo.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="Students")
-public class Students {
+public class Student {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package com.example.demo.Model;
+package com.example.demo.model;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 @Table(name="Programs", indexes = {
 		@Index(name = "programs_program_code_idx", columnList = "programCode")
 })
-public class Programs {
+public class Program {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Programs {
 	private Long programId;
 	
 	@Column(name="programCode", nullable = false, unique=true)
-	private Long studentId;
+	private String programCode;
 	
 	@Column(name="programName", nullable = false)
 	private String programName;
