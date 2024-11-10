@@ -3,7 +3,6 @@ Ronald Ombao
 301213219
 November 09, 2024
  --> 
-<!-- checkout.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -15,8 +14,7 @@ November 09, 2024
 <body>
     <div class="container mt-5">
         <h2>Payment for Application Processing Fee</h2>
-
-        <!-- Display selected program information -->
+		
         <div class="alert alert-info">
             <p><strong>Program:</strong> <span th:text="${program.programName}"></span></p>
             <p><strong>Fee:</strong> $<span th:text="${program.fee}"></span></p>
@@ -31,7 +29,7 @@ November 09, 2024
             </div>
             <div class="mb-3">
                 <label for="expiryDate" class="form-label">Expiry Date</label>
-                <input type="month" class="form-control" id="expiryDate" name="expiryDate" required>
+                <input type="date" class="form-control" id="expiryDate" name="expiryDate" required>
             </div>
             <div class="mb-3">
                 <label for="cvv" class="form-label">CVV</label>

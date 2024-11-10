@@ -6,6 +6,8 @@ import com.example.demo.model.Student;
 import com.example.demo.repository.EnrollmentRepository;
 import com.example.demo.repository.StudentRepository;
 
+import jakarta.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,6 @@ public class StudentService {
         return studentRepository.findByUsername(username);
     }
 
-    // Update student profile
     public void updateStudentProfile(Student student, String username) {
     	Student updatedStudent = this.studentRepository.findByUsername(username);
     	updatedStudent.setAddress(student.getAddress());
@@ -42,6 +43,7 @@ public class StudentService {
         studentRepository.save(updatedStudent);
     }
     
+    @Transactional
     public List<Program> getEnrolledProgramsForStudent(Long studentId) {
         List<Enrollment> enrollments = enrollmentRepository.findByStudentId(studentId);
         List<Program> programs = new ArrayList<>();

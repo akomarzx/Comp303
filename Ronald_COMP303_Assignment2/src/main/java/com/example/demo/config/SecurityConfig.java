@@ -29,7 +29,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/login", "/register").permitAll()
+            .requestMatchers("/login", "/register", "/").permitAll()
             .anyRequest().authenticated()
          )
         .formLogin(form -> form
@@ -54,7 +54,6 @@ public class SecurityConfig {
 	    return username -> {
 	        Student student = studentsService.getStudentByUsername(username);
 	        if (student != null) {
-	            // Convert Student to UserDetails
 	            return User.builder()
 	                .username(student.getUsername())
 	                .password("{noop}" + student.getPassword())  	
