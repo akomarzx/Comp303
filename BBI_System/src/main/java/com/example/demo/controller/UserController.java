@@ -27,7 +27,6 @@ public class UserController {
 	public ResponseEntity<MessageResponse> register(@Valid @RequestBody CreateUserRequest createUserRequest) {
 		
 		ResponseEntity<MessageResponse> response;
-		MessageResponse message;
 		
 		try {
 			this.userService.registerNewUser(createUserRequest);

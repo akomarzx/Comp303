@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.config.PasswordEncoderConfig;
@@ -30,7 +29,7 @@ public class UserService {
 		User newUser = new User();
 		newUser.setUsername(createUserRequest.username());
 		newUser.setPassword(encoder.passwordEncoder().encode(createUserRequest.password()));
-		newUser.setRole(createUserRequest.isBloodBank() != null ? Roles.BLOODBANK : Roles.SEEKER);
+		newUser.setRole(createUserRequest.isBloodBank() != null && createUserRequest.isBloodBank() ? Roles.BLOODBANK : Roles.SEEKER);
 		this.userRepository.save(newUser);
 	}
 	
