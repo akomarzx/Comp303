@@ -23,9 +23,6 @@ public class BootstrapDatabase implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		CreateUserRequest admin1 = new CreateUserRequest("admin", "123456789", null);
-		this.userService.registerAdmin(admin1);
-		
 	}
 	
 }
