@@ -33,4 +33,11 @@ public class UserService {
 		this.userRepository.save(newUser);
 	}
 	
+	public void registerAdmin(CreateUserRequest createUserRequest) {
+		User newUser = new User();
+		newUser.setUsername(createUserRequest.username());
+		newUser.setPassword(encoder.passwordEncoder().encode(createUserRequest.password()));
+		newUser.setRole(createUserRequest.isBloodBank() != null && createUserRequest.isBloodBank() ? Roles.BLOODBANK : Roles.SEEKER);
+		this.userRepository.save(newUser);
+	}
 }
