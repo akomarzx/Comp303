@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 /**
@@ -19,7 +20,9 @@ import jakarta.persistence.Table;
  */
 
 @Entity
-@Table(name = "User")
+@Table(name = "User", indexes = {
+		@Index(name = "idx_user_username_a", columnList = "username", unique = true)
+})
 public class User {
 	
 	public User() {

@@ -14,6 +14,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -24,7 +25,9 @@ import jakarta.persistence.Table;
  * November 14, 2024
  */
 @Entity
-@Table(name = "Patient")
+@Table(name = "Patient", indexes = {
+       @Index(name = "idx_patient_user_id_a", columnList = "userId", unique = true)
+})
 public class Patient {
 	
 	public Patient() {

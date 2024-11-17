@@ -6,5 +6,12 @@ package com.example.demo.domain;
  * November 14, 2024
  */
 public enum BloodGroup {
-	OPositive, ONegative, APositive, ANegative, BPositive, BNegative, ABPositive, ABNegative
+	O_POSITIVE, 
+	O_NEGATIVE, 
+	A_POSITIVE, 
+	A_NEGATIVE, 
+	B_POSITIVE, 
+	B_NEGATIVE, 
+	AB_POSTIVE, 
+	AB_NEGATIVE
 }
