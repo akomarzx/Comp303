@@ -24,7 +24,7 @@ import jakarta.persistence.Table;
  * November 14, 2024
  */
 @Entity
-@Table()
+@Table(name = "Patient")
 public class Patient {
 	
 	public Patient() {

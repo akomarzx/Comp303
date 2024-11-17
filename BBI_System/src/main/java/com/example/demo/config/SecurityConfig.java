@@ -24,7 +24,6 @@ import jakarta.persistence.Entity;
  * 301213219
  * November 14, 2024
  */
-@Entity
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

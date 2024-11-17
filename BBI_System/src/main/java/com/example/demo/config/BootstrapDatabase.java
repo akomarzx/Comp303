@@ -1,19 +1,17 @@
 package com.example.demo.config;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 
-import com.example.demo.domain.User;
+import com.example.demo.dto.CreateUserRequest;
 import com.example.demo.service.UserService;
-
-import jakarta.persistence.Entity;
-import jakarta.transaction.Transactional;
 
 /**
  * Ronald Jr Ombao
  * 301213219
  * November 14, 2024
  */
-@Entity
+@Configuration
 public class BootstrapDatabase implements CommandLineRunner {
 	
 	private final UserService userService;
@@ -23,12 +21,10 @@ public class BootstrapDatabase implements CommandLineRunner {
 	}
 	
 	@Override
-	@Transactional
 	public void run(String... args) throws Exception {
 		
-		CreateUser
-		
-		this.userService.registerNewUser(null);
+		CreateUserRequest admin1 = new CreateUserRequest("admin", "123456789", null);
+		this.userService.registerAdmin(admin1);
 		
 	}
 	
