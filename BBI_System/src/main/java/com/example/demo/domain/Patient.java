@@ -52,7 +52,7 @@ public class Patient {
 	@Column(name = "patientId", nullable = false)
 	private Long patientId;
 	
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;

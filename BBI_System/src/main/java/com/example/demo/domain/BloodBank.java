@@ -2,6 +2,8 @@ package com.example.demo.domain;
 
 import java.util.List;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -46,7 +48,7 @@ public class BloodBank {
 	@Column(name = "bloodBankId", nullable = false)
 	private Long bloodBankId;
 	
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
@@ -69,7 +71,7 @@ public class BloodBank {
     @Column(name = "email")
     private String email;
     
-    @OneToMany(mappedBy = "bloodStockId")
+    @OneToMany(mappedBy = "bloodStockId", fetch = FetchType.LAZY)
     private List<BloodStock> bloodStocks;
 
 	public Long getBloodBankId() {

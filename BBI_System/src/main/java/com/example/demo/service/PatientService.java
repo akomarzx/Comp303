@@ -48,7 +48,7 @@ public class PatientService {
 	}
 	
 	@Transactional
-	public PatientDTO getPatienById(Long patientId, String username) throws Exception { 
+	public PatientDTO getPatientById(Long patientId, String username) throws Exception { 
 		
 		Optional<Patient> patientResult = this.patientRepository.findById(patientId);
 		
@@ -138,8 +138,19 @@ public class PatientService {
 		}
 	}
 	
-	public void deletePatientById(Long patientId) {
-		this.patientRepository.deleteById(patientId);
+	@Transactional
+	public void deletePatientById(Long patientId, String username) throws Exception {
+		
+		Optional<Patient> existingInfo = this.patientRepository.findById(patientId);
+		
+		if(existingInfo.isPresent()) {
+			
+			if(!existingInfo.get().getUser().getUsername().equals(username)) {
+				throw new Exception("Patient Info does not belong to user.");
+			}
+			
+			this.patientRepository.deleteById(patientId);
+		}
 	}
 	
 }

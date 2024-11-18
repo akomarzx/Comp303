@@ -5,5 +5,4 @@ package com.example.demo.dto;
  * November 14, 2024
  */
 public record MessageResponse(String message) {
-
 }

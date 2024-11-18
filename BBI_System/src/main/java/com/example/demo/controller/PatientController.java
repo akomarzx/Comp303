@@ -24,6 +24,8 @@ import com.example.demo.dto.patient.UpsertPatientDTO;
 import com.example.demo.service.PatientService;
 import com.example.demo.utility.ValidationGroups.Create;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
@@ -45,7 +47,7 @@ public class PatientController {
 	public ResponseEntity<ApiResponseEntity<PatientDTO>> getPatient(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
 		PatientDTO patient;
 		try {
-			patient = this.patientService.getPatienById(id, userDetails.getUsername());
+			patient = this.patientService.getPatientById(id, userDetails.getUsername());
 			ApiResponseEntity<PatientDTO> response = new ApiResponseEntity<>(patient, "");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -77,8 +79,12 @@ public class PatientController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePatientInfo(@PathVariable Long id) {
-		this.patientService.deletePatientById(id);
+	public ResponseEntity<MessageResponse> deletePatientInfo(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+		try {
+			this.patientService.deletePatientById(id, userDetails.getUsername());
+		} catch (Exception e) {
+			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
