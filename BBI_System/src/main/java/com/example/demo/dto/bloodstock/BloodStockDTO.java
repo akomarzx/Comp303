@@ -1,7 +1,20 @@
 package com.example.demo.dto.bloodstock;
 
+import java.time.LocalDateTime;
+
 import com.example.demo.dto.bloodbank.BloodBankDTO;
+import com.example.demo.utility.ValidationGroups.Create;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
-public record BloodStockDTO() {
+import jakarta.validation.constraints.NotNull;
 
+public record BloodStockDTO(
+		Long bloodStockId,
+		@NotNull(groups = Create.class) Long quantity,
+		@NotNull(groups = Create.class) LocalDateTime bestBeforeDate,
+		@NotNull(groups = Create.class) String bloodGroup,
+		@NotNull(groups = Create.class) String status,
+		@NotNull(groups = Create.class) String serialNo) {
 }

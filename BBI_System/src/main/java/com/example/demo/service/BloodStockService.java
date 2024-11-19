@@ -7,10 +7,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.BloodBank;
+import com.example.demo.domain.BloodGroup;
 import com.example.demo.domain.BloodStock;
+import com.example.demo.domain.BloodStockStatus;
 import com.example.demo.domain.User;
 import com.example.demo.dto.bloodbank.BloodBankDTO;
 import com.example.demo.dto.bloodbank.BloodBankInfoAndStocksDTO;
+import com.example.demo.dto.bloodstock.BloodStockAndBankDTO;
+import com.example.demo.dto.bloodstock.BloodStockDTO;
 import com.example.demo.repository.BloodBankRepository;
 import com.example.demo.repository.BloodStockRepository;
 
@@ -23,55 +27,72 @@ public class BloodStockService {
 	private final BloodBankRepository bloodBankRepository;
 	private final BloodStockRepository bloodStockRepository;
 	
-	public BloodStockService(BloodBankRepository bloodBankRepository, UserService userService, BloodBankRepository bloodBankRepository2, BloodStockRepository bloodStockRepository) {
+	public BloodStockService(UserService userService, BloodBankRepository bloodBankRepository2, BloodStockRepository bloodStockRepository) {
 		this.userService = userService;
 		this.bloodBankRepository = bloodBankRepository2;
 		this.bloodStockRepository = bloodStockRepository;
 		
 	}
 	
-	public List<BloodBankDTO> getAllBloodStock() {
+	public List<BloodStockAndBankDTO> getAllBloodStock() {
 		
-		List<BloodBank> allBbs = this.bloodBankRepository.findAll();
-		List<BloodBankDTO> mappedBbs = new ArrayList<>();
+		List<BloodStock> stocks = this.bloodStockRepository.findAll();
+		List<BloodStockAndBankDTO> stocksAndBloodBankDTO = new ArrayList<>();
 		
-		for(BloodBank bloodBank : allBbs) {
-			BloodBankDTO dto = new BloodBankDTO(bloodBank.getBloodBankId(),
-						bloodBank.getBloodBankName(),
-						bloodBank.getAddress(),
-						bloodBank.getCity(),
-						bloodBank.getPhone(),
-						bloodBank.getWebsite(),
-						bloodBank.getEmail()
+		for(BloodStock stock : stocks) {
+			
+			BloodBank currentBloodBank = stock.getBloodBank();
+			
+			BloodBankDTO bloodBankInfo = new BloodBankDTO(currentBloodBank.getBloodBankId(),
+					currentBloodBank.getBloodBankName(),
+					currentBloodBank.getAddress(),
+					currentBloodBank.getCity(),
+					currentBloodBank.getPhone(),
+					currentBloodBank.getWebsite(),
+					currentBloodBank.getEmail());
+					
+			BloodStockAndBankDTO dto = new BloodStockAndBankDTO(stock.getBloodStockId(),
+						stock.getQuantity(),
+						stock.getBestBeforeDate(),
+						stock.getBloodGroup().toString(),
+						stock.getStatus().toString(),
+						stock.getSerialNo(),
+						bloodBankInfo
 					);
 			
-			mappedBbs.add(dto);
+			stocksAndBloodBankDTO.add(dto);
 		}
 		
-		return mappedBbs;
+		return stocksAndBloodBankDTO;
 	}
 	
 	@Transactional
-	public BloodBankInfoAndStocksDTO getBloodBankById(Long bloodBankId) throws Exception { 
+	public BloodStockAndBankDTO getBloodStockById(Long bloodStockId) throws Exception { 
 		
-		Optional<BloodBank> existingResult = this.bloodBankRepository.findById(bloodBankId);
+		Optional<BloodStock> existingResult = this.bloodStockRepository.findById(bloodStockId);
 		
 		if(existingResult.isPresent()) {
 			
-			BloodBank bloodBank = existingResult.get();
+			BloodStock stock = existingResult.get();
 			
-			BloodBankDTO dto = new BloodBankDTO(bloodBank.getBloodBankId(),
-					bloodBank.getBloodBankName(),
-					bloodBank.getAddress(),
-					bloodBank.getCity(),
-					bloodBank.getPhone(),
-					bloodBank.getWebsite(),
-					bloodBank.getEmail()
-				);
+			BloodBank currentBloodBank = stock.getBloodBank();
 			
-			List<BloodStock> bloodStocks = bloodBank.getBloodStocks();
-			
-			return new BloodBankInfoAndStocksDTO(dto, bloodStocks);
+			BloodBankDTO bloodBankInfo = new BloodBankDTO(currentBloodBank.getBloodBankId(),
+					currentBloodBank.getBloodBankName(),
+					currentBloodBank.getAddress(),
+					currentBloodBank.getCity(),
+					currentBloodBank.getPhone(),
+					currentBloodBank.getWebsite(),
+					currentBloodBank.getEmail());
+					
+			return new BloodStockAndBankDTO(stock.getBloodStockId(),
+						stock.getQuantity(),
+						stock.getBestBeforeDate(),
+						stock.getBloodGroup().toString(),
+						stock.getStatus().toString(),
+						stock.getSerialNo(),
+						bloodBankInfo
+					);
 			
 		} else {
 			return null;
@@ -80,28 +101,28 @@ public class BloodStockService {
 	}
 	
 	@Transactional
-	public void createBloodBank(BloodBankDTO dto, String username) throws Exception {
+	public void createBloodBank(BloodStockDTO dto, String username) throws Exception {
 		
 		Optional<User> currentUser = this.userService.getUserByUsername(username);
 		
 		if(currentUser.isPresent() ) {
 			
-			Optional<BloodBank> existingInfo = this.bloodBankRepository.findByUser(currentUser.get());
+			Optional<BloodBank> bloodBank = this.bloodBankRepository.findByUser(currentUser.get());
 			
-			if(existingInfo.isPresent()) {
-				throw new Exception("Blood Bank info already exist.");
+			if(bloodBank.isEmpty()) {
+				throw new Exception("Blood Bank cannot be found.");
 			}
 			
-			BloodBank newBloodBank = new BloodBank();
-			newBloodBank.setBloodBankName(dto.bloodBankName());;
-			newBloodBank.setAddress(dto.address());
-			newBloodBank.setCity(dto.city());
-			newBloodBank.setPhone(dto.phone());
-			newBloodBank.setEmail(dto.email());
-			newBloodBank.setUser(currentUser.get());
-			newBloodBank.setWebsite(dto.website());
+			BloodStock newStock = new BloodStock();
 			
-			this.bloodBankRepository.save(newBloodBank);
+			newStock.setBloodBank(bloodBank.get());
+			newStock.setQuantity(dto.quantity());
+			newStock.setBloodGroup(BloodGroup.valueOf(dto.bloodGroup()));
+			newStock.setStatus(BloodStockStatus.valueOf(dto.status()));
+			newStock.setBestBeforeDate(dto.bestBeforeDate());
+			newStock.setSerialNo(dto.serialNo());
+			
+			this.bloodStockRepository.save(newStock);
 			
 		} else {
 			throw new Exception("User is not found."); 
@@ -109,56 +130,45 @@ public class BloodStockService {
 	}
 	
 	@Transactional
-	public void updateBloodBank(Long bloodBankId, BloodBankDTO dto, String username) throws Exception {
+	public void updateBloodStock(Long bloodStockId, BloodStockDTO dto, String username) throws Exception {
 		
-		Optional<BloodBank> existingInfo = this.bloodBankRepository.findById(bloodBankId);
+		Optional<BloodStock> existingInfo = this.bloodStockRepository.findById(bloodStockId);
 			
 		if(existingInfo.isPresent()) {
 			
-			if(!existingInfo.get().getUser().getUsername().equals(username)) {
-				throw new Exception("BloodBank Info does not belong to user.");
+			BloodStock existing = existingInfo.get();
+			
+			if(dto.quantity() != null ) {
+				existing.setQuantity(dto.quantity());
+			}
+			if(dto.bestBeforeDate() != null) {
+				existing.setBestBeforeDate(dto.bestBeforeDate());
+			}
+			if(dto.bloodGroup() != null) {
+				existing.setBloodGroup(BloodGroup.valueOf(dto.bloodGroup()));
+			}
+			if(dto.status() != null) {
+				existing.setStatus(BloodStockStatus.valueOf(dto.status()));
+			}
+			if(dto.serialNo() != null) {
+				existing.setSerialNo(dto.serialNo());
 			}
 			
-			BloodBank existing = existingInfo.get();
-			
-			if(dto.bloodBankName() != null ) {
-				existing.setBloodBankName(dto.bloodBankName());
-			}
-			if(dto.address() != null) {
-				existing.setAddress(dto.address());
-			}
-			if(dto.city() != null) {
-				existing.setCity(dto.city());
-			}
-			if(dto.website() != null) {
-				existing.setWebsite(dto.website());
-			}
-			if(dto.phone() != null) {
-				existing.setPhone(dto.phone());
-			}
-			if(dto.email() != null) {
-				existing.setEmail(dto.email());	
-			}
-			
-			this.bloodBankRepository.save(existing);
+			this.bloodStockRepository.save(existing);
 			
 		} else {
-			throw new Exception("Patient is not found."); 
+			throw new Exception("Blood Stock is not found."); 
 		}
 	}
 	
 	@Transactional
 	public void deleteBloodBankById(Long existingId, String username) throws Exception {
 		
-		Optional<BloodBank> existingInfo = this.bloodBankRepository.findById(existingId);
+		Optional<BloodStock> existingInfo = this.bloodStockRepository.findById(existingId);
 		
 		if(existingInfo.isPresent()) {
 			
-			if(!existingInfo.get().getUser().getUsername().equals(username)) {
-				throw new Exception("Blood Bank Info does not belong to user.");
-			}
-			
-			this.bloodBankRepository.deleteById(existingId);
+			this.bloodStockRepository.deleteById(existingId);
 		}
 	}
 }

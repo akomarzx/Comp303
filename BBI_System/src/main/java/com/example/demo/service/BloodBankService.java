@@ -12,6 +12,7 @@ import com.example.demo.domain.BloodStock;
 import com.example.demo.domain.User;
 import com.example.demo.dto.bloodbank.BloodBankDTO;
 import com.example.demo.dto.bloodbank.BloodBankInfoAndStocksDTO;
+import com.example.demo.dto.bloodstock.BloodStockDTO;
 import com.example.demo.repository.BloodBankRepository;
 import com.example.demo.repository.PatientRepository;
 
@@ -67,9 +68,22 @@ public class BloodBankService {
 					bloodBank.getEmail()
 				);
 			
+			List<BloodStockDTO> bloodStockDTO = new ArrayList<>();
+			
 			List<BloodStock> bloodStocks = bloodBank.getBloodStocks();
 			
-			return new BloodBankInfoAndStocksDTO(dto, bloodStocks);
+			for(BloodStock stock : bloodStocks) {
+				bloodStockDTO.add(new BloodStockDTO(
+						stock.getBloodStockId(),
+						stock.getQuantity(),
+						stock.getBestBeforeDate(),
+						stock.getBloodGroup().toString(),
+						stock.getStatus().toString(),
+						stock.getSerialNo()
+				));
+			}
+			
+			return new BloodBankInfoAndStocksDTO(dto, bloodStockDTO);
 			
 		} else {
 			return null;
@@ -141,7 +155,7 @@ public class BloodBankService {
 			this.bloodBankRepository.save(existing);
 			
 		} else {
-			throw new Exception("Patient is not found."); 
+			throw new Exception("Blood Bank is not found."); 
 		}
 	}
 	

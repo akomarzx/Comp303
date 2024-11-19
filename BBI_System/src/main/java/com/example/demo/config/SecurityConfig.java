@@ -39,6 +39,8 @@ public class SecurityConfig {
 		http
 	        .authorizeHttpRequests(authz -> authz
 	        	.requestMatchers(HttpMethod.POST, "/user").permitAll()
+	        	.requestMatchers(HttpMethod.POST, "/bloodstock").hasRole("BLOODBANK")
+	        	.requestMatchers(HttpMethod.PUT, "/bloodstock/**").hasRole("BLOODBANK")
 	            .anyRequest().authenticated()
 	         )
 	        .httpBasic(Customizer.withDefaults())

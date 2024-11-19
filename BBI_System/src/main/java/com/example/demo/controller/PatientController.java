@@ -23,6 +23,7 @@ import com.example.demo.dto.patient.PatientDTO;
 import com.example.demo.dto.patient.UpsertPatientDTO;
 import com.example.demo.service.PatientService;
 import com.example.demo.utility.ValidationGroups.Create;
+import com.example.demo.utility.ValidationGroups.Update;
 
 import jakarta.transaction.Transactional;
 
@@ -39,7 +40,7 @@ public class PatientController {
 	@GetMapping
 	public ResponseEntity<ApiResponseEntity<List<PatientDTO>>> getAllPatients() {
 		List<PatientDTO> patients = this.patientService.getAllPatient();
-		ApiResponseEntity<List<PatientDTO>> response = new ApiResponseEntity<>(patients, "");
+		ApiResponseEntity<List<PatientDTO>> response = new ApiResponseEntity<>(patients, patients.size(),"");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
@@ -48,10 +49,10 @@ public class PatientController {
 		PatientDTO patient;
 		try {
 			patient = this.patientService.getPatientById(id, userDetails.getUsername());
-			ApiResponseEntity<PatientDTO> response = new ApiResponseEntity<>(patient, "");
+			ApiResponseEntity<PatientDTO> response = new ApiResponseEntity<>(patient, 1,"");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
-			ApiResponseEntity<PatientDTO> response = new ApiResponseEntity<>(null, e.getMessage());
+			ApiResponseEntity<PatientDTO> response = new ApiResponseEntity<>(null, null,e.getMessage());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -68,7 +69,7 @@ public class PatientController {
 	}
 	
 	@PutMapping("/{id}")
-	ResponseEntity<MessageResponse> updatePatient(@PathVariable Long id, @Validated(Create.class) @RequestBody UpsertPatientDTO upsertPatientDTO,
+	ResponseEntity<MessageResponse> updatePatient(@PathVariable Long id, @Validated(Update.class) @RequestBody UpsertPatientDTO upsertPatientDTO,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		try {
 			this.patientService.updatePatient(id, upsertPatientDTO, userDetails.getUsername());

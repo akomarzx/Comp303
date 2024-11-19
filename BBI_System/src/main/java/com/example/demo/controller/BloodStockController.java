@@ -20,59 +20,62 @@ import com.example.demo.dto.ApiResponseEntity;
 import com.example.demo.dto.MessageResponse;
 import com.example.demo.dto.bloodbank.BloodBankDTO;
 import com.example.demo.dto.bloodbank.BloodBankInfoAndStocksDTO;
+import com.example.demo.dto.bloodstock.BloodStockAndBankDTO;
+import com.example.demo.dto.bloodstock.BloodStockDTO;
 import com.example.demo.service.BloodBankService;
+import com.example.demo.service.BloodStockService;
 import com.example.demo.utility.ValidationGroups.Create;
 import com.example.demo.utility.ValidationGroups.Update;
 
 @RestController
-@RequestMapping("/bloodbank")
-public class BloodBankController {
+@RequestMapping("/bloodstock")
+public class BloodStockController {
 	
-	private final BloodBankService bloodBankService;
+	private final BloodStockService bloodStockService;
 	
-	public BloodBankController(BloodBankService bloodBankService) {
-		this.bloodBankService = bloodBankService;
+	public BloodStockController(BloodStockService bloodBankService) {
+		this.bloodStockService = bloodBankService;
 	}
 	
 	@GetMapping
-	public ResponseEntity<ApiResponseEntity<List<BloodBankDTO>>> getAllBloodBanks() {
-		List<BloodBankDTO> bloodBanks = this.bloodBankService.getAllBloodBanks();
-		ApiResponseEntity<List<BloodBankDTO>> response = new ApiResponseEntity<>(bloodBanks, bloodBanks.size(),"");
+	public ResponseEntity<ApiResponseEntity<List<BloodStockAndBankDTO>>> getAllBloodBanks() {
+		List<BloodStockAndBankDTO> bloodBanks = this.bloodStockService.getAllBloodStock();
+		ApiResponseEntity<List<BloodStockAndBankDTO>> response = new ApiResponseEntity<>(bloodBanks, bloodBanks.size(),"");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponseEntity<BloodBankInfoAndStocksDTO>> getBloodBank(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<ApiResponseEntity<BloodStockAndBankDTO>> getBloodBank(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
 		
-		BloodBankInfoAndStocksDTO bloodBankInfo;
+		BloodStockAndBankDTO bloodBankInfo;
 		try {
-			bloodBankInfo = this.bloodBankService.getBloodBankById(id);
-			ApiResponseEntity<BloodBankInfoAndStocksDTO> response = new ApiResponseEntity<>(bloodBankInfo,1, "");
+			bloodBankInfo = this.bloodStockService.getBloodStockById(id);
+			ApiResponseEntity<BloodStockAndBankDTO> response = new ApiResponseEntity<>(bloodBankInfo, 1, "");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
-			ApiResponseEntity<BloodBankInfoAndStocksDTO> response = new ApiResponseEntity<>(null, null,e.getMessage());
+			ApiResponseEntity<BloodStockAndBankDTO> response = new ApiResponseEntity<>(null, null, e.getMessage());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		
 	}
 	
 	@PostMapping
-	public ResponseEntity<MessageResponse> createBloodBank(@Validated(Create.class) @RequestBody BloodBankDTO upsertBloodBanktDTO,
+	public ResponseEntity<MessageResponse> createBloodBank(@Validated(Create.class) @RequestBody BloodStockDTO upsertBloodStockDTO,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		try {
-			this.bloodBankService.createBloodBank(upsertBloodBanktDTO, userDetails.getUsername());
-			return new ResponseEntity<>(new MessageResponse("Blood Bank Successfully Created"), HttpStatus.OK);
+			this.bloodStockService.createBloodBank(upsertBloodStockDTO, userDetails.getUsername());
+			return new ResponseEntity<>(new MessageResponse("Blood Stock Successfully Created"), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@PutMapping("/{id}")
-	ResponseEntity<MessageResponse> updateBloodBanks(@PathVariable Long id, @Validated(Update.class) @RequestBody BloodBankDTO upsertBloodBanktDTO,
+	ResponseEntity<MessageResponse> updateBloodBanks(@PathVariable Long id, @Validated(Update.class) @RequestBody BloodStockDTO upsertBloodStockDTO,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		try {
-			this.bloodBankService.updateBloodBank(id, upsertBloodBanktDTO, userDetails.getUsername());
-			return new ResponseEntity<>(new MessageResponse("Blood Bank info Successfully Updated"), HttpStatus.OK);
+			this.bloodStockService.updateBloodStock(id, upsertBloodStockDTO, userDetails.getUsername());
+			return new ResponseEntity<>(new MessageResponse("Blood Stock info Successfully Updated"), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
@@ -81,7 +84,7 @@ public class BloodBankController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<MessageResponse> deleteBloodBank(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
 		try {
-			this.bloodBankService.deleteBloodBankById(id, userDetails.getUsername());
+			this.bloodStockService.deleteBloodBankById(id, userDetails.getUsername());
 		} catch (Exception e) {
 			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}

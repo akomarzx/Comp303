@@ -1,6 +1,9 @@
 package com.example.demo.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +28,22 @@ import jakarta.persistence.TemporalType;
 })
 public class BloodStock {
 	
+	public BloodStock() {
+		super();
+	}
+
+	public BloodStock(Long bloodStockId, Long quantity, LocalDateTime bestBeforeDate, BloodGroup bloodGroup,
+			BloodStockStatus status, BloodBank bloodBank, String serialNo) {
+		super();
+		this.bloodStockId = bloodStockId;
+		this.quantity = quantity;
+		this.bestBeforeDate = bestBeforeDate;
+		this.bloodGroup = bloodGroup;
+		this.status = status;
+		this.bloodBank = bloodBank;
+		this.serialNo = serialNo;
+	}
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "bloodStockId", nullable = false)
@@ -34,8 +53,8 @@ public class BloodStock {
 	private Long quantity;
 	
 	@Column(name = "bestBefore", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private LocalDate bestBeforeDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime bestBeforeDate;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "bloodGroup")
@@ -45,12 +64,69 @@ public class BloodStock {
 	@Column(name = "status")
 	private BloodStockStatus status;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "bloodBankId")
     private BloodBank bloodBank;
 	
     @Column(name = "serialNo", nullable = false, unique = true)
     private String serialNo;
+
+	public Long getBloodStockId() {
+		return bloodStockId;
+	}
+
+	public void setBloodStockId(Long bloodStockId) {
+		this.bloodStockId = bloodStockId;
+	}
+
+	public Long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+
+	public LocalDateTime getBestBeforeDate() {
+		return bestBeforeDate;
+	}
+
+	public void setBestBeforeDate(LocalDateTime bestBeforeDate) {
+		this.bestBeforeDate = bestBeforeDate;
+	}
+
+	public BloodGroup getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(BloodGroup bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
+
+	public BloodStockStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(BloodStockStatus status) {
+		this.status = status;
+	}
+
+	public BloodBank getBloodBank() {
+		return bloodBank;
+	}
+
+	public void setBloodBank(BloodBank bloodBank) {
+		this.bloodBank = bloodBank;
+	}
+
+	public String getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
     
     
 }
