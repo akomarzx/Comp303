@@ -18,7 +18,11 @@ import com.example.demo.repository.BloodStockRepository;
 import com.example.demo.repository.PatientRepository;
 
 import jakarta.transaction.Transactional;
-
+/**
+ * Ronald Jr Ombao
+ * 301213219
+ * November 14, 2024
+ */
 @Service
 public class BloodBankService {
 	

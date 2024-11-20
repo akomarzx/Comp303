@@ -26,7 +26,11 @@ import com.example.demo.service.BloodBankService;
 import com.example.demo.service.BloodStockService;
 import com.example.demo.utility.ValidationGroups.Create;
 import com.example.demo.utility.ValidationGroups.Update;
-
+/**
+ * Ronald Jr Ombao
+ * 301213219
+ * November 14, 2024
+ */
 @RestController
 @RequestMapping("/bloodstock")
 public class BloodStockController {

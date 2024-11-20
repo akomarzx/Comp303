@@ -18,7 +18,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
+/**
+ * Ronald Jr Ombao
+ * 301213219
+ * November 14, 2024
+ */
 @Entity
 @Table(name = "BloodBank",indexes = {
 	       @Index(name = "idx_patient_user_id_a", columnList = "userId", unique = true)

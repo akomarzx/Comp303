@@ -1,5 +1,9 @@
 package com.example.demo.dto.bloodbank;
-
+/**
+ * Ronald Jr Ombao
+ * 301213219
+ * November 14, 2024
+ */
 import java.util.List;
 
 import com.example.demo.domain.BloodStock;

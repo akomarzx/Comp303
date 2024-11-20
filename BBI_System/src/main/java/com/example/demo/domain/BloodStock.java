@@ -19,7 +19,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
+/**
+ * Ronald Jr Ombao
+ * 301213219
+ * November 14, 2024
+ */
 @Entity
 @Table(name = "BloodStock" , indexes = {
 		@Index(name = "idx_blood_stock_blood_bank_id_a", columnList = "bloodBankId"),
