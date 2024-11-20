@@ -34,9 +34,17 @@ public class BloodStockService {
 		
 	}
 	
-	public List<BloodStockAndBankDTO> getAllBloodStock() {
+	public List<BloodStockAndBankDTO> getAllBloodStock(String bloodType) {
 		
-		List<BloodStock> stocks = this.bloodStockRepository.findAll();
+		List<BloodStock> stocks = new ArrayList<>();
+		
+		if(bloodType != null) {
+			BloodGroup group = BloodGroup.valueOf(bloodType);
+			stocks = this.bloodStockRepository.findAllByBloodGroup(group);
+		} else {
+			stocks = this.bloodStockRepository.findAll();
+		}
+		
 		List<BloodStockAndBankDTO> stocksAndBloodBankDTO = new ArrayList<>();
 		
 		for(BloodStock stock : stocks) {

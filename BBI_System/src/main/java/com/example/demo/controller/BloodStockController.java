@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.ApiResponseEntity;
@@ -42,8 +43,8 @@ public class BloodStockController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<ApiResponseEntity<List<BloodStockAndBankDTO>>> getAllBloodBanks() {
-		List<BloodStockAndBankDTO> bloodBanks = this.bloodStockService.getAllBloodStock();
+	public ResponseEntity<ApiResponseEntity<List<BloodStockAndBankDTO>>> getAllBloodBanks(@RequestParam(name = "type", required = false) String bloodType) {
+		List<BloodStockAndBankDTO> bloodBanks = this.bloodStockService.getAllBloodStock(bloodType);
 		ApiResponseEntity<List<BloodStockAndBankDTO>> response = new ApiResponseEntity<>(bloodBanks, bloodBanks.size(),"");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
