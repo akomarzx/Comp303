@@ -64,8 +64,7 @@ public class BloodStock {
 	@Column(name = "status")
 	private BloodStockStatus status;
 	
-    @ManyToOne
-    @Fetch(value = FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bloodBankId")
     private BloodBank bloodBank;
 	

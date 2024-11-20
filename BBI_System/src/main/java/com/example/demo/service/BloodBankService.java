@@ -14,6 +14,7 @@ import com.example.demo.dto.bloodbank.BloodBankDTO;
 import com.example.demo.dto.bloodbank.BloodBankInfoAndStocksDTO;
 import com.example.demo.dto.bloodstock.BloodStockDTO;
 import com.example.demo.repository.BloodBankRepository;
+import com.example.demo.repository.BloodStockRepository;
 import com.example.demo.repository.PatientRepository;
 
 import jakarta.transaction.Transactional;
@@ -23,11 +24,12 @@ public class BloodBankService {
 	
 	private final UserService userService;
 	private final BloodBankRepository bloodBankRepository;
+	private final BloodStockRepository stockRepository;
 	
-	public BloodBankService(BloodBankRepository bloodBankRepository, UserService userService, BloodBankRepository bloodBankRepository2) {
+	public BloodBankService(BloodBankRepository bloodBankRepository, UserService userService, BloodBankRepository bloodBankRepository2, BloodStockRepository stockRepository, BloodStockRepository stockRepository2) {
 		this.userService = userService;
 		this.bloodBankRepository = bloodBankRepository2;
-		
+		this.stockRepository = stockRepository2;
 	}
 	
 	public List<BloodBankDTO> getAllBloodBanks() {
@@ -59,6 +61,8 @@ public class BloodBankService {
 			
 			BloodBank bloodBank = existingResult.get();
 			
+			List<BloodStock> bloodBankStocks = this.stockRepository.findAllByBloodBank(bloodBank);
+					
 			BloodBankDTO dto = new BloodBankDTO(bloodBank.getBloodBankId(),
 					bloodBank.getBloodBankName(),
 					bloodBank.getAddress(),
@@ -70,9 +74,7 @@ public class BloodBankService {
 			
 			List<BloodStockDTO> bloodStockDTO = new ArrayList<>();
 			
-			List<BloodStock> bloodStocks = bloodBank.getBloodStocks();
-			
-			for(BloodStock stock : bloodStocks) {
+			for(BloodStock stock : bloodBankStocks) {
 				bloodStockDTO.add(new BloodStockDTO(
 						stock.getBloodStockId(),
 						stock.getQuantity(),
